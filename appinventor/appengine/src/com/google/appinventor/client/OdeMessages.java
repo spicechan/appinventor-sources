@@ -2417,6 +2417,10 @@ public interface OdeMessages extends Messages {
   @Description("")
   String AlignHorizontalProperties();
 
+  @DefaultMessage("AlignHorizontalDropDown")
+  @Description("")
+  String AlignHorizontalDropDownProperties();
+
   @DefaultMessage("AlignVertical")
   @Description("")
   String AlignVerticalProperties();

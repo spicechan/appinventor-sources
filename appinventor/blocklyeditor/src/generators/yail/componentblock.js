@@ -157,11 +157,17 @@ Blockly.Yail.methodHelper = function(methodBlock, name, methodName, generic) {
         // TODO(hal, andrew): check for empty socket and generate error if necessary
         + Blockly.Yail.valueToCode(methodBlock, 'COMPONENT', Blockly.Yail.ORDER_NONE)
         + Blockly.Yail.YAIL_SPACER;
+    if (Blockly.ComponentBlock.isScreenAlignmentDropDownName(methodName)) {
+      console.log("KIRN WAS HERE 9000!!!!!!"); // For example, AddDays
+    }
   } else {
     callPrefix = Blockly.Yail.YAIL_CALL_COMPONENT_METHOD;
     name = methodBlock.getFieldValue("COMPONENT_SELECTOR");
     // special case for handling Clock.Add
     timeUnit = methodBlock.getFieldValue("TIME_UNIT");
+    if (Blockly.ComponentBlock.isScreenAlignmentDropDownName(methodName)) {
+      console.log("KIRN WAS HERE!!!!!!"); // For example, AddDays
+    }
     if (timeUnit) {
       if (Blockly.ComponentBlock.isClockMethodName(methodName)) {
         methodName = "Add"+timeUnit; // For example, AddDays

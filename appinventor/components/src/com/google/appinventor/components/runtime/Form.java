@@ -1195,6 +1195,15 @@ public class Form extends Activity
    return horizontalAlignment;
  }
 
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE,
+          description = "A number that encodes how contents of the screen are aligned " +
+                  " horizontally. The choices are: 1 = left aligned, 2 = horizontally centered, " +
+                  " 3 = right aligned.")
+  public int AlignHorizontalDropDown() {
+    return horizontalAlignment;
+  }
+
  /**
   * Sets the horizontal alignment for contents of the screen
   *
@@ -1214,6 +1223,21 @@ public class Form extends Activity
          ErrorMessages.ERROR_BAD_VALUE_FOR_HORIZONTAL_ALIGNMENT, alignment);
    }
  }
+
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_HORIZONTAL_ALIGNMENT,
+          defaultValue = ComponentConstants.HORIZONTAL_ALIGNMENT_DEFAULT + "")
+  @SimpleProperty
+  public void AlignHorizontalDropDown(int alignment) {
+    try {
+      // notice that the throw will prevent the alignment from being changed
+      // if the argument is illegal
+      alignmentSetter.setHorizontalAlignment(alignment);
+      horizontalAlignment = alignment;
+    } catch (IllegalArgumentException e) {
+      this.dispatchErrorOccurredEvent(this, "HorizontalAlignment",
+              ErrorMessages.ERROR_BAD_VALUE_FOR_HORIZONTAL_ALIGNMENT, alignment);
+    }
+  }
 
  /**
   * Returns a number that encodes how contents of the arrangement are aligned vertically.

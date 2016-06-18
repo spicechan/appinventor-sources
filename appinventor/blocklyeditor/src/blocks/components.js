@@ -763,7 +763,12 @@ Blockly.ComponentBlock.timeUnitsMenu =
 Blockly.ComponentBlock.clockMethodNames = ["AddYears", "AddMonths","AddWeeks", "AddDays",
   "AddHours", "AddMinutes", "AddSeconds", "AddDuration"];
 Blockly.ComponentBlock.isClockMethodName =  function  (name) {
-    return Blockly.ComponentBlock.clockMethodNames.indexOf(name) != -1;
+  return Blockly.ComponentBlock.clockMethodNames.indexOf(name) != -1;
+};
+
+Blockly.ComponentBlock.screenAlignmentDropDownNames = ["AlignHorizontalDropDown", "AlignVerticalDropDown"];
+Blockly.ComponentBlock.isScreenAlignmentDropDownName =  function  (name) {
+  return Blockly.ComponentBlock.screenAlignmentDropDownNames.indexOf(name) != -1;
 };
 
 Blockly.ComponentBlock.createComponentDropDown = function(block){
