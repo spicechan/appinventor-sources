@@ -135,7 +135,6 @@ Blockly.Yail.genericMethodNoReturn = function(typeName, methodName) {
  * @returns {Function} method call generation function with instanceName and methodName bound in
  */
 Blockly.Yail.methodHelper = function(methodBlock, name, methodName, generic) {
-
 // TODO: the following line  may be a bit of a hack because it hard-codes "component" as the
 // first argument type when we're generating yail for a generic block, instead of using
 // type information associated with the socket. The component parameter is treated differently
@@ -152,34 +151,40 @@ Blockly.Yail.methodHelper = function(methodBlock, name, methodName, generic) {
   }
   //var yailTypes = (generic ? [Blockly.Yail.YAIL_COMPONENT_TYPE] : []).concat(methodBlock.yailTypes);
   var callPrefix;
-  if (generic) {
-    callPrefix = Blockly.Yail.YAIL_CALL_COMPONENT_TYPE_METHOD
+  var alignment=methodBlock.getFieldValue("ALIGNMENT");
+  if (!alignment) {
+    if (generic) {
+        callPrefix = Blockly.Yail.YAIL_CALL_COMPONENT_TYPE_METHOD
+            // TODO(hal, andrew): check for empty socket and generate error if necessary
+            + Blockly.Yail.valueToCode(methodBlock, 'COMPONENT', Blockly.Yail.ORDER_NONE)
+            + Blockly.Yail.YAIL_SPACER;
+        if (Blockly.ComponentBlock.isScreenAlignmentDropDownName(methodName)) {
+        console.log("KIRN WAS HERE 9000!!!!!!"); // For example, AddDays
+        }
+    } else {
+        callPrefix = Blockly.Yail.YAIL_CALL_COMPONENT_METHOD;
+        name = methodBlock.getFieldValue("COMPONENT_SELECTOR");
+        // special case for handling Clock.Add
+        timeUnit = methodBlock.getFieldValue("TIME_UNIT");
+        if (Blockly.ComponentBlock.isScreenAlignmentDropDownName(methodName)) {
+        console.log("KIRN WAS HERE!!!!!!"); // For example, AddDays
+        }
+        if (timeUnit) {
+              if (Blockly.ComponentBlock.isClockMethodName(methodName)) {
+                methodName = "Add"+timeUnit; // For example, AddDays
+                }
+            }
+    }
+
+    var args = [];
+    for (var x = 0; x < numOfParams; x++) {
         // TODO(hal, andrew): check for empty socket and generate error if necessary
-        + Blockly.Yail.valueToCode(methodBlock, 'COMPONENT', Blockly.Yail.ORDER_NONE)
-        + Blockly.Yail.YAIL_SPACER;
-    if (Blockly.ComponentBlock.isScreenAlignmentDropDownName(methodName)) {
-      console.log("KIRN WAS HERE 9000!!!!!!"); // For example, AddDays
-    }
-  } else {
-    callPrefix = Blockly.Yail.YAIL_CALL_COMPONENT_METHOD;
-    name = methodBlock.getFieldValue("COMPONENT_SELECTOR");
-    // special case for handling Clock.Add
-    timeUnit = methodBlock.getFieldValue("TIME_UNIT");
-    if (Blockly.ComponentBlock.isScreenAlignmentDropDownName(methodName)) {
-      console.log("KIRN WAS HERE!!!!!!"); // For example, AddDays
-    }
-    if (timeUnit) {
-      if (Blockly.ComponentBlock.isClockMethodName(methodName)) {
-        methodName = "Add"+timeUnit; // For example, AddDays
-      }
+        args.push(Blockly.Yail.YAIL_SPACER
+                  + Blockly.Yail.valueToCode(methodBlock, 'ARG' + x, Blockly.Yail.ORDER_NONE));
     }
   }
-
-  var args = [];
-  for (var x = 0; x < numOfParams; x++) {
-    // TODO(hal, andrew): check for empty socket and generate error if necessary
-    args.push(Blockly.Yail.YAIL_SPACER
-              + Blockly.Yail.valueToCode(methodBlock, 'ARG' + x, Blockly.Yail.ORDER_NONE));
+  else {
+    args = [alignment];
   }
 
   return callPrefix

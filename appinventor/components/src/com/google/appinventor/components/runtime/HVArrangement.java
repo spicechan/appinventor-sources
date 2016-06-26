@@ -211,6 +211,40 @@ public class HVArrangement extends AndroidViewComponent implements Component, Co
   }
 
   /**
+   * Returns a number that encodes how contents of the arrangement are aligned horizontally.
+   * The choices are: 1 = left aligned, 2 = right aligned, 3 = horizontally centered
+   */
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE,
+          description = "A number that encodes how contents of the arrangement are aligned " +
+                  " horizontally. The choices are: 1 = left aligned, 2 = right aligned, " +
+                  " 3 = horizontally centered.  Alignment has no effect if the arrangement's width is " +
+                  "automatic.")
+  public int AlignHorizontalDropDown() {
+    return horizontalAlignment;
+  }
+
+  /**
+   * Sets the horizontal alignment for contents of the arrangement
+   *
+   * @param alignment
+   */
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_HORIZONTAL_ALIGNMENT,
+          defaultValue = ComponentConstants.HORIZONTAL_ALIGNMENT_DEFAULT + "")
+  @SimpleProperty
+  public void AlignHorizontalDropDown(int alignment) {
+    try {
+      // notice that the throw will prevent the alignment from being changed
+      // if the argument is illegal
+      alignmentSetter.setHorizontalAlignment(alignment);
+      horizontalAlignment = alignment;
+    } catch (IllegalArgumentException e) {
+      container.$form().dispatchErrorOccurredEvent(this, "HorizontalAlignment",
+              ErrorMessages.ERROR_BAD_VALUE_FOR_HORIZONTAL_ALIGNMENT, alignment);
+    }
+  }
+
+  /**
    * Returns a number that encodes how contents of the arrangement are aligned vertically.
    * The choices are: 1 = top, 2 = vertically centered, 3 = aligned at the bottom.
    * Alignment has no effect if the arrangement's height is automatic.
