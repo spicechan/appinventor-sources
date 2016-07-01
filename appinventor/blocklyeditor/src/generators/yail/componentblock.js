@@ -149,26 +149,20 @@ Blockly.Yail.methodHelper = function(methodBlock, name, methodName, generic) {
   for(var i=0;i<paramObjects.length;i++) {
     yailTypes.push(paramObjects[i].type);
   }
+  console.log("Kirn " + methodName);
   //var yailTypes = (generic ? [Blockly.Yail.YAIL_COMPONENT_TYPE] : []).concat(methodBlock.yailTypes);
   var callPrefix;
-  var alignment=methodBlock.getFieldValue("ALIGNMENT");
-  if (!alignment) {
     if (generic) {
         callPrefix = Blockly.Yail.YAIL_CALL_COMPONENT_TYPE_METHOD
             // TODO(hal, andrew): check for empty socket and generate error if necessary
             + Blockly.Yail.valueToCode(methodBlock, 'COMPONENT', Blockly.Yail.ORDER_NONE)
             + Blockly.Yail.YAIL_SPACER;
-        if (Blockly.ComponentBlock.isScreenAlignmentDropDownName(methodName)) {
-        console.log("KIRN WAS HERE 9000!!!!!!"); // For example, AddDays
-        }
+     // For example, AddDays
     } else {
         callPrefix = Blockly.Yail.YAIL_CALL_COMPONENT_METHOD;
         name = methodBlock.getFieldValue("COMPONENT_SELECTOR");
         // special case for handling Clock.Add
         timeUnit = methodBlock.getFieldValue("TIME_UNIT");
-        if (Blockly.ComponentBlock.isScreenAlignmentDropDownName(methodName)) {
-        console.log("KIRN WAS HERE!!!!!!"); // For example, AddDays
-        }
         if (timeUnit) {
               if (Blockly.ComponentBlock.isClockMethodName(methodName)) {
                 methodName = "Add"+timeUnit; // For example, AddDays
@@ -182,10 +176,7 @@ Blockly.Yail.methodHelper = function(methodBlock, name, methodName, generic) {
         args.push(Blockly.Yail.YAIL_SPACER
                   + Blockly.Yail.valueToCode(methodBlock, 'ARG' + x, Blockly.Yail.ORDER_NONE));
     }
-  }
-  else {
-    args = [alignment];
-  }
+
 
   return callPrefix
     + Blockly.Yail.YAIL_QUOTE
@@ -230,13 +221,22 @@ Blockly.Yail.component_set_get = function() {
  * @returns {Function} property setter code generation function with instanceName bound in
  */
 Blockly.Yail.setproperty = function() {
+
   var propertyName = this.getFieldValue("PROP");
   var propType = this.getPropertyObject(propertyName).type
   var assignLabel = Blockly.Yail.YAIL_QUOTE + this.getFieldValue("COMPONENT_SELECTOR") + Blockly.Yail.YAIL_SPACER
     + Blockly.Yail.YAIL_QUOTE + propertyName;
   var code = Blockly.Yail.YAIL_SET_AND_COERCE_PROPERTY + assignLabel + Blockly.Yail.YAIL_SPACER;
   // TODO(hal, andrew): check for empty socket and generate error if necessary
-  code = code.concat(Blockly.Yail.valueToCode(this, 'VALUE', Blockly.Yail.ORDER_NONE /*TODO:?*/));
+  var alignment=methodBlock.getFieldValue("ALIGNMENT");
+      if (!alignment) {
+  code = code.concat(Blockly.Yail.valueToCode(this, 'VALUE', Blockly.Yail.ORDER_NONE));
+  }
+  else {
+      console.log("KIRN:"); // For example, AddDays
+      args = [alignment];
+        code = code.concat(Blockly.Yail.valueToCode(this, 'ALIGNMENT', Blockly.Yail.ORDER_NONE /*TODO:?*/));
+    }
   code = code.concat(Blockly.Yail.YAIL_SPACER + Blockly.Yail.YAIL_QUOTE
     + propType + Blockly.Yail.YAIL_CLOSE_COMBINATION);
   return code;

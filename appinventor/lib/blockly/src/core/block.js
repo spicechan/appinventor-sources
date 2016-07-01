@@ -1961,6 +1961,7 @@ Blockly.Block.prototype.removeInput = function(name, opt_quiet) {
  * @return {Object} The input object, or null of the input does not exist.
  */
 Blockly.Block.prototype.getInput = function(name) {
+console.log(this.inputList);
   for (var x = 0, input; input = this.inputList[x]; x++) {
     if (input.name == name) {
       return input;

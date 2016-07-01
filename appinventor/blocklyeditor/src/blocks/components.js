@@ -305,7 +305,6 @@ Blockly.Blocks.component_method = {
     if(!this.isGeneric) {
       this.componentDropDown.setValue(this.instanceName);
     }
-
     if(!this.isGeneric) {
       if (this.typeName == "Clock" && Blockly.ComponentBlock.isClockMethodName(this.methodName)) {
         var timeUnitDropDown = Blockly.ComponentBlock.createClockAddDropDown();
@@ -342,10 +341,10 @@ Blockly.Blocks.component_method = {
         }
       } else {
         this.appendDummyInput()
-          .appendField(Blockly.Msg.LANG_COMPONENT_BLOCK_METHOD_TITLE_CALL)
-          .appendField(this.componentDropDown, "COMPONENT_SELECTOR")
-          .appendField('.' + window.parent.BlocklyPanel_getLocalizedMethodName(this.getMethodTypeObject().name));
-      }
+            .appendField(Blockly.Msg.LANG_COMPONENT_BLOCK_METHOD_TITLE_CALL)
+            .appendField(this.componentDropDown, "COMPONENT_SELECTOR")
+            .appendField('.' + window.parent.BlocklyPanel_getLocalizedMethodName(this.getMethodTypeObject().name));
+        }
       this.componentDropDown.setValue(this.instanceName);
     } else {
       this.appendDummyInput()
@@ -519,12 +518,23 @@ Blockly.Blocks.component_set_get = {
       this.setPreviousStatement(true);
       this.setNextStatement(true);
       if(!this.isGeneric) {
-        this.appendValueInput("VALUE")
-          .appendField(Blockly.Msg.LANG_COMPONENT_BLOCK_SETTER_TITLE_SET)
-          .appendField(this.componentDropDown, "COMPONENT_SELECTOR")
-          .appendField('.')
-          .appendField(dropdown, "PROP")
-          .appendField(Blockly.Msg.LANG_COMPONENT_BLOCK_SETTER_TITLE_TO);
+        if (this.propertyName == "AlignHorizontalDropDown") {
+             var alignDropDown = new Blockly.FieldDropdown([["left","1"], ["right","2"],["middle","3"]]);
+             this.appendDummyInput()
+                             .appendField(Blockly.Msg.LANG_COMPONENT_BLOCK_SETTER_TITLE_SET)
+                             .appendField(this.componentDropDown, "COMPONENT_SELECTOR")
+                             .appendField('.')
+                             .appendField(dropdown, "PROP")
+                             .appendField(Blockly.Msg.LANG_COMPONENT_BLOCK_SETTER_TITLE_TO)
+                .appendField(alignDropDown, "ALIGNMENT");
+        } else {
+            this.appendValueInput("VALUE")
+                .appendField(Blockly.Msg.LANG_COMPONENT_BLOCK_SETTER_TITLE_SET)
+                .appendField(this.componentDropDown, "COMPONENT_SELECTOR")
+                .appendField('.')
+                .appendField(dropdown, "PROP")
+                .appendField(Blockly.Msg.LANG_COMPONENT_BLOCK_SETTER_TITLE_TO);
+          }
       } else {
         //generic set
         this.appendDummyInput()
